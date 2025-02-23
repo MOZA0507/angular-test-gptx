@@ -1,0 +1,199 @@
+<p-toast></p-toast>
+<div class="container mx-auto p-6">
+    <div class="flex justify-start mb-4">
+      <h1 class="m-0 text-white font-bold text-4xl">Usuarios</h1>
+    </div>
+
+    <div class="card p-6 shadow-lg rounded-lg">
+      <p-table
+        #dt 
+        [value]="users"
+        [rows]="10"
+        [paginator]="true"
+        [globalFilterFields]="['nombres', 'apellidopaterno', 'apellidomaterno']"
+        [tableStyle]="{ 'min-width': '50rem' }"
+        [rowHover]="false"
+        dataKey="idusuario"
+        currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas"
+        [showCurrentPageReport]="true"
+        class="w-full">
+        <ng-template pTemplate="caption">
+            <div class="flex justify-between items-center">
+              <p-button 
+                label="Nuevo"
+                (onClick)="openDialog()" 
+              />
+              
+              <span class="p-input-icon-left">
+                <i class="pi pi-search"></i>
+                <input
+                pInputText
+                type="text"
+                (input)="filterGlobal(dt, $event)"
+                placeholder="Buscar..."
+                class="p-2 rounded-md"
+              />
+              </span>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+        
+              <th pSortableColumn="nombres" style="min-width:15rem">
+                Nombre(s) <p-sortIcon field="nombres"></p-sortIcon>
+              </th>
+              <th pSortableColumn="apellidopaterno">
+                Apellido Paterno <p-sortIcon field="apellidopaterno"></p-sortIcon>
+              </th>
+              <th pSortableColumn="apellidomaterno">
+                Apellido materno <p-sortIcon field="apellidomaterno"></p-sortIcon>
+              </th>
+              <th pSortableColumn="direccion">
+                Dirección <p-sortIcon field="direccion"></p-sortIcon>
+              </th>
+              <th pSortableColumn="apellidomaterno">
+                Teléfono <p-sortIcon field="telefono"></p-sortIcon>
+              </th>
+        
+              <th style="width: 10rem"></th>
+            </tr>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-user>
+            <tr>
+              <td>{{ user.nombres }}</td>
+              <td>{{ user.apellidopaterno }}</td>
+              <td>{{ user.apellidomaterno }}</td>
+              <td>{{ user.direccion }}</td>
+              <td>{{ user.telefono }}</td>
+              <td>
+                <p-button
+                  icon="pi pi-pencil"
+                  class="mr-2"
+                  [rounded]="true"
+                  [outlined]="true"
+                  severity="success"
+                  (onClick)="openEditUser(user)"
+                ></p-button>
+                <p-button
+                  icon="pi pi-trash"
+                  severity="danger"
+                  [rounded]="true"
+                  [outlined]="true"
+                  (onClick)="deleteUser(user)"
+                ></p-button>
+              </td>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="summary">
+            <div class="flex align-items-center justify-content-between">
+              En total, hay {{ users ? users.length : 0 }} registros.
+            </div>
+          </ng-template>
+      </p-table>
+    </div>
+</div>
+
+<p-dialog 
+        [header]="modalType === 'create' ? 'Añadir usuario': 'Editar usuario'"
+        [modal]="true"
+        [(visible)]="isOpenDialogModal" 
+        [style]="{ width: '25rem' }"
+        styleClass="p-fluid"
+        [contentStyle]="{'overflow-y':'visible'}">
+        <ng-template pTemplate="content">
+            <span class="p-text-secondary block mb-8">Update your information.</span>
+        <div class="flex items-center gap-4 mb-4">
+            <label for="nombres" class="font-semibold w-24">Nombre(s)</label>
+            <input
+                type="text" 
+                pInputText
+                id="nombres"
+                [(ngModel)]="user.nombres"
+                class="flex-auto"
+                autofocus
+                required />
+            <small class="p-error">
+                @if(submitted && !user.nombres){
+                    Nombres es requerido
+                }
+            </small>
+        </div>
+        <div class="flex items-center gap-4 mb-4">
+            <label for="apellidopaterno" class="font-semibold w-24">Apellido Paterno</label>
+            <input
+                type="text" 
+                pInputText
+                id="apellidopaterno"
+                [(ngModel)]="user.apellidopaterno"
+                class="flex-auto"
+                autofocus
+                required />
+            <small class="p-error">
+                @if(submitted && !user.apellidopaterno){
+                    Apellido paterno es requerido
+                }
+            </small>
+        </div>
+        <div class="flex items-center gap-4 mb-4">
+            <label for="apellidomaterno" class="font-semibold w-24">Apellido Materno</label>
+            <input
+                type="text" 
+                pInputText
+                id="apellidomaterno"
+                [(ngModel)]="user.apellidomaterno"
+                class="flex-auto"
+                autofocus
+                required />
+            <small class="p-error">
+                @if(submitted && !user.apellidomaterno){
+                    Apellido materno es requerido
+                }
+            </small>
+        </div>
+
+        <div class="flex items-center gap-4 mb-4">
+            <label for="direccion" class="font-semibold w-24">Dirección</label>
+            <input
+                type="text" 
+                pInputText
+                id="direccion"
+                [(ngModel)]="user.direccion"
+                class="flex-auto"
+                autofocus
+                required />
+            <small class="p-error">
+                @if(submitted && !user.direccion){
+                    Direccion es requerida
+                }
+            </small>
+        </div>
+
+        <div class="flex items-center gap-4 mb-4">
+            <label for="telefono" class="font-semibold w-24">Teléfono</label>
+            <input
+                type="tel" 
+                pInputText
+                maxlength="10"
+                id="telefono"
+                [(ngModel)]="user.telefono"
+                class="flex-auto"
+                autofocus
+                required />
+            <small class="p-error">
+                @if(submitted && !user.telefono){
+                    Telefono es requerido
+                }
+            </small>
+        </div>
+        </ng-template>
+        
+        <ng-template pTemplate="footer">
+            <div class="flex justify-end gap-2">
+                <p-button label="Cancelar" severity="secondary" (click)="isOpenDialogModal = false" />
+                <p-button label="Guardar" (click)="saveUser(user)" [disabled]="isFormNotComplete" />
+            </div>
+        </ng-template>
+        
+    </p-dialog>
+    <p-confirmDialog [style]="{width: '450px'}"/>
