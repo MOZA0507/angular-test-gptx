@@ -23,9 +23,7 @@
                 label="Nuevo"
                 (onClick)="openDialog()" 
               />
-              
-              <span class="p-input-icon-left">
-                <i class="pi pi-search"></i>
+              <span>
                 <input
                 pInputText
                 type="text"
@@ -68,20 +66,28 @@
               <td>{{ user.telefono }}</td>
               <td>
                 <p-button
-                  icon="pi pi-pencil"
                   class="mr-2"
                   [rounded]="true"
                   [outlined]="true"
                   severity="success"
                   (onClick)="openEditUser(user)"
-                ></p-button>
+                >
+                <ng-template pTemplate="content">
+                  <span class="material-icons">edit</span>
+                </ng-template>
+              </p-button>
+                
                 <p-button
-                  icon="pi pi-trash"
+                  class="mr-2"
                   severity="danger"
                   [rounded]="true"
                   [outlined]="true"
                   (onClick)="deleteUser(user)"
-                ></p-button>
+                >
+                  <ng-template pTemplate="content">
+                    <span class="material-icons">delete</span>
+                  </ng-template>
+                </p-button>
               </td>
             </tr>
           </ng-template>
@@ -171,9 +177,8 @@
 
         <div class="flex items-center gap-4 mb-4">
             <label for="telefono" class="font-semibold w-24">Teléfono</label>
-            <input
-                type="tel" 
-                pInputText
+            <p-inputNumber
+                [useGrouping]="false"
                 maxlength="10"
                 id="telefono"
                 [(ngModel)]="user.telefono"
@@ -191,7 +196,7 @@
         <ng-template pTemplate="footer">
             <div class="flex justify-end gap-2">
                 <p-button label="Cancelar" severity="secondary" (click)="isOpenDialogModal = false" />
-                <p-button label="Guardar" (click)="saveUser(user)" [disabled]="isFormNotComplete" />
+                <p-button label="Guardar" (click)="saveUser(user)" />
             </div>
         </ng-template>
         

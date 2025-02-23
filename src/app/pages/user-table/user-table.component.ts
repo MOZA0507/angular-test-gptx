@@ -18,7 +18,7 @@ import { UserService } from '../../services/user.service';
 import { GenericResponse } from '../../models/response.model';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
-import { KeyFilterModule } from 'primeng/keyfilter';
+import { InputNumberModule } from 'primeng/inputnumber';
 
 
 @Component({
@@ -37,7 +37,7 @@ import { KeyFilterModule } from 'primeng/keyfilter';
     FormsModule,
     ToastModule,
     ConfirmDialogModule,
-    KeyFilterModule],
+    InputNumberModule],
   providers: [
     MessageService,
     ConfirmationService
